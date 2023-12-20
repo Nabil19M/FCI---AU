@@ -8,10 +8,14 @@ import javax.swing.border.Border;
  */
 public class Myframe extends JFrame implements ActionListener{
 JComboBox combobox;
+ShapePanel shapePanel;
+String selectedShape;
 JLabel combolabel;
 JLabel get;
 JLabel perlabel;
 JLabel arlabel;
+JLabel sr;
+JLabel wh;
 JButton Calculate;
 JTextField radiusField;
 JTextField widthField;
@@ -27,7 +31,19 @@ JTextField heightField;
        this.setLayout(null);
        Border border = BorderFactory.createLineBorder(Color.black, 2, true);
        //frame.setPack() // to make the components resizable as the frame
-       
+        shapePanel = new ShapePanel();
+        shapePanel.setBounds(280, 150, 300, 200);
+        shapePanel.setOpaque(false);
+        this.add(shapePanel);
+        //*************************************************************/
+       sr = new JLabel();
+       sr.setVisible(true);
+       sr.setFont(new Font("Georgia",Font.ITALIC,14));
+       wh = new JLabel();
+       wh.setVisible(true);
+       wh.setFont(new Font("Georgia",Font.ITALIC,14));
+       this.add(sr);
+       this.add(wh);
       //********** MY "Welcome to program" *****************//
              JLabel label = new JLabel();
        label.setText("Perimeter & Area Calculator");
@@ -52,13 +68,13 @@ JTextField heightField;
        get.setVisible(true);
        get.setVerticalAlignment(JLabel.CENTER);
        //get.setHorizontalAlignment(JLabel.CENTER);
-       get.setBounds(10,110 ,280,30);
+       get.setBounds(30,150 ,280,30);
        this.add(get);
        
        //************ show result****************/
        perlabel = new JLabel();
        perlabel.setText("  Perimeter = "+ "              cm");
-       perlabel.setFont(new Font("Georgia",Font.ITALIC,15));
+       perlabel.setFont(new Font("Georgia",Font.ITALIC,16));
        perlabel.setVisible(true);
        perlabel.setVerticalAlignment(JLabel.CENTER);
       // perlabel.setHorizontalAlignment(JLabel.EAST);
@@ -68,7 +84,7 @@ JTextField heightField;
        //**********show ar label****************/
        arlabel = new JLabel();
        arlabel.setText("  Area = " + "                    cm");
-       arlabel.setFont(new Font("Georgia",Font.ITALIC,15));
+       arlabel.setFont(new Font("Georgia",Font.ITALIC,16));
        arlabel.setVisible(true);
        arlabel.setVerticalAlignment(JLabel.CENTER);
        //arlabel.setHorizontalAlignment(JLabel.CENTER);
@@ -87,17 +103,17 @@ JTextField heightField;
       /************************************/
       radiusField = new JTextField();
       radiusField.setVisible(false);
-      radiusField.setBounds(20,150 ,100,30);
+      radiusField.setBounds(60,200 ,120,30);
       this.add(radiusField);
       /*************************************/
             widthField = new JTextField();
       widthField.setVisible(false);
-      widthField.setBounds(20,150 ,100,30);
+      widthField.setBounds(60,200 ,140,30);
       this.add(widthField);
       /************************************/
             heightField = new JTextField();
       heightField.setVisible(false);
-      heightField.setBounds(20,190 ,100,30);
+      heightField.setBounds(60,240 ,140,30);
       this.add(heightField);
       /************************************/
       /***********  CAlculate Button*************/
@@ -117,32 +133,47 @@ JTextField heightField;
 if (e.getSource() == combobox) {
     switch(combobox.getSelectedIndex()) {
         case 0:
+            selectedShape = (String) combobox.getSelectedItem();
+            shapePanel.setShape(selectedShape);
             perlabel.setText("  Perimeter  = 2 π r ");
-            arlabel.setText("  Area  = π  sqr(r)");
+            arlabel.setText("  Area  = π  r\u00B2");
             radiusField.setVisible(true);
             widthField.setVisible(false);
             heightField.setVisible(false);
             get.setText("Radius of the circle in cm");
-            
+            sr.setVisible(true);
+            sr.setText("r");
+            sr.setBounds(400,199 ,50,50);
+            wh.setVisible(false);
             break;
         case 1:
+            selectedShape = (String) combobox.getSelectedItem();
+            shapePanel.setShape(selectedShape);
             perlabel.setText("  Perimeter  = 2 * (W + H) ");
             arlabel.setText("  Area  = W * H");
             radiusField.setVisible(false);
             widthField.setVisible(true);
             heightField.setVisible(true);
             get.setText("Width & Height of the Rectangle in cm");
-           
+            sr.setBounds(260,215 ,50,50);
+            sr.setText("W");
+            wh.setText("H");
+            wh.setBounds(375,150 ,50,50);
+            wh.setVisible(true);
             break;
             
         case 2:
+            selectedShape = (String) combobox.getSelectedItem();
+            shapePanel.setShape(selectedShape);
             perlabel.setText("  Perimeter  = 4 * L ");
-            arlabel.setText("  Area  = sqr(L)");
+            arlabel.setText("  Area  = L\u00B2");
             radiusField.setVisible(true);  
             widthField.setVisible(false);
             heightField.setVisible(false);
             get.setText("Length of square sides in cm");
-
+            sr.setBounds(360,120 ,50,50);
+            sr.setText("L");
+            wh.setVisible(false);
             break;
     }
     this.revalidate();
@@ -153,19 +184,23 @@ if (e.getSource() == combobox) {
         {
             case 0:
             Circle mycircle;
+            sr.setText(radiusField.getText());
              mycircle = new Circle(Double.parseDouble(radiusField.getText()));
             perlabel.setText("  Perimeter ≈ "+mycircle.getPerimeter() /100+" cm");
-            arlabel.setText("  Area ≈ " + mycircle.getArea() /100 +" cm");
+            arlabel.setText("  Area ≈ " + mycircle.getArea() /100 +" cm\u00B2");
             break;
             case 1:
+                wh.setText(heightField.getText());
+            sr.setText(widthField.getText());
             Rectangle myrectangle = new Rectangle(Double.parseDouble(widthField.getText()),Double.parseDouble(heightField.getText()));
             perlabel.setText("  Perimeter = "+myrectangle.getPerimeter() +" cm");
-            arlabel.setText("  Area = " + myrectangle.getArea() +" cm");
+            arlabel.setText("  Area = " + myrectangle.getArea() +" cm\u00B2");
             break;
             case 2:
+                sr.setText(radiusField.getText());
                 Square mysquare = new Square(Double.parseDouble(radiusField.getText()));
             perlabel.setText("  Perimeter = "+mysquare.getPerimeter() +" cm");
-            arlabel.setText("  Area = " + mysquare.getArea() +" cm");
+            arlabel.setText("  Area = " + mysquare.getArea() +" cm\u00B2");
             break;
             
                 
